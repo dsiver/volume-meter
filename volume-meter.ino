@@ -41,6 +41,7 @@ void loop() {
   int loudness = Esplora.readMicrophone();
   loudness = constrain(loudness, minAmplitude, maxAmplitude);
   drawGraph(loudness);
+  delay(10);
 }
 
 void drawGraph(int loudness) {
@@ -57,9 +58,16 @@ void drawGraph(int loudness) {
 void drawRectangle(int width) {
   EsploraTFT.fill(0, 0, 0);
   EsploraTFT.rect(0, EsploraTFT.height() / 2, EsploraTFT.width(), rectangleHeight);
-  if (width < yellowRectangleStart) {
+  if (width > redRectangleStart) {
     EsploraTFT.fill(0, 255, 0);
-    EsploraTFT.rect(0, EsploraTFT.height() / 2, width, rectangleHeight);
+    EsploraTFT.rect(0, EsploraTFT.height() / 2, yellowRectangleStart, rectangleHeight);
+    EsploraTFT.fill(0, 255, 255);
+    EsploraTFT.rect(yellowRectangleStart, EsploraTFT.height() / 2, redRectangleStart, rectangleHeight);
+    EsploraTFT.fill(0, 0, 255);
+    EsploraTFT.rect(redRectangleStart, EsploraTFT.height() / 2, width, rectangleHeight);
+#ifdef DEBUG
+    Serial.println("R, width: " + String(width));
+#endif
   }
   else if (width > yellowRectangleStart && width < redRectangleStart) {
     EsploraTFT.fill(0, 255, 0);
@@ -71,16 +79,8 @@ void drawRectangle(int width) {
     Serial.println("Y, width: " + String(width));
 #endif
   }
-  else if (width > redRectangleStart) {
+  else if (width < yellowRectangleStart) {
     EsploraTFT.fill(0, 255, 0);
-    EsploraTFT.rect(0, EsploraTFT.height() / 2, yellowRectangleStart, rectangleHeight);
-    EsploraTFT.fill(0, 255, 255);
-    EsploraTFT.rect(yellowRectangleStart, EsploraTFT.height() / 2, redRectangleStart, rectangleHeight);
-    EsploraTFT.fill(0, 0, 255);
-    EsploraTFT.rect(redRectangleStart, EsploraTFT.height() / 2, width, rectangleHeight);
-#ifdef DEBUG
-    Serial.println("R, width: " + String(width));
-#endif
+    EsploraTFT.rect(0, EsploraTFT.height() / 2, width, rectangleHeight);
   }
-  delay(10);
 }
