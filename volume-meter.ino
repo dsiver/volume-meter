@@ -11,7 +11,8 @@
 #include <SPI.h>
 #include <TFT.h>
 
-#define DEBUG 0
+//#define DEBUG
+#define DELAY 20
 #define serialBaudRate 9600
 #define minAmplitude 0
 #define maxAmplitude 1023
@@ -27,10 +28,6 @@ void setup() {
   Serial.begin(serialBaudRate);
   EsploraTFT.background(0, 0, 0);
 #ifdef DEBUG
-  //  char text[4];
-  //  String(EsploraTFT.width()).toCharArray(text, 4);
-  //  EsploraTFT.stroke(255, 255, 255);
-  //  EsploraTFT.text(text, 0, 0);
   Serial.print("yellowRectangleStart: " + String(yellowRectangleStart));
   Serial.print(" redRectangleStart: " + String(redRectangleStart));
   Serial.println("");
@@ -41,7 +38,7 @@ void loop() {
   int loudness = Esplora.readMicrophone();
   loudness = constrain(loudness, minAmplitude, maxAmplitude);
   drawGraph(loudness);
-  delay(10);
+  delay(DELAY);
 }
 
 void drawGraph(int loudness) {
